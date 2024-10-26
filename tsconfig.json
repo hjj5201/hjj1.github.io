@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    // 我们绝对路径会在src中寻找
+    "baseUrl": "./src",
     "target": "es5",
     "lib": [
       "dom",
