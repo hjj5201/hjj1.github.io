@@ -2,6 +2,7 @@ import { useAuth } from "context/auth-context";
 import React, { FormEvent } from "react";
 import {Form,Input,Button} from 'antd'
 import Password from "antd/lib/input/Password";
+import { LongButton } from "unauthenticated-app";
 
 const apiUrl = process.env.REACT_APP_API_URL
 export const LoginScreen = () =>{
@@ -22,7 +23,7 @@ export const LoginScreen = () =>{
         </Form.Item>
         <Form.Item>
             {/* 这个type是指样式的type 原先的submit放在htmlType里了*/}
-            <Button type={"primary"} htmlType={'submit'}>登录</Button>
+            <LongButton type={"primary"} htmlType={'submit'}>登录</LongButton>
         </Form.Item>
     </Form>
 }
