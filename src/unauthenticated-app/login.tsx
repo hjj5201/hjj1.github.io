@@ -1,29 +1,28 @@
 import { useAuth } from "context/auth-context";
 import React, { FormEvent } from "react";
+import {Form,Input,Button} from 'antd'
+import Password from "antd/lib/input/Password";
 
 const apiUrl = process.env.REACT_APP_API_URL
 export const LoginScreen = () =>{
 
     const {login,user} = useAuth()
 
-    const handleSubmit = (event:FormEvent<HTMLFormElement>) =>{
-
-      
-        event.preventDefault()
-        const username = (event.currentTarget.elements[0] as HTMLInputElement).value
-        const password = (event.currentTarget.elements[1] as HTMLInputElement).value
-        login({username,password})
+    const handleSubmit = (value:{username:string , password:string}) =>{
+        login(value)
     }
 
-    return <form onSubmit={handleSubmit}>
-        <div>
-            <label htmlFor="username">用户名</label>
-            <input type="text" id={'username'}/>
-        </div>
-        <div>
-            <label htmlFor="password">密码</label>
-            <input type="password" id={'password'}/>
-        </div>
-        <button type={"submit"}>登录</button>
-    </form>
+    return <Form  onFinish={handleSubmit}>
+        {/* 通过name属性来给value的值，就不需要和之前那样子做了 */}
+        <Form.Item name={'username'} rules={[{required:true,message:'请输入用户名'}]}>
+            <Input type="text" id={'username'} placeholder={'用户名'}/>
+        </Form.Item>
+        <Form.Item name={'password'} rules={[{required:true , message : '请输入密码'}]}>
+            <Input type="password" id={'password'} placeholder={'密码'}/>
+        </Form.Item>
+        <Form.Item>
+            {/* 这个type是指样式的type 原先的submit放在htmlType里了*/}
+            <Button type={"primary"} htmlType={'submit'}>登录</Button>
+        </Form.Item>
+    </Form>
 }

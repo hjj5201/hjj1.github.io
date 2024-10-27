@@ -1,5 +1,6 @@
 import React from "react"
 import { useEffect, useState } from "react"
+import { Input,Select } from "antd";
 
 // 设置使用变量的说明书，即限制变量的类型---强类型
 // 之所以暴露出来是因为list也要用
@@ -25,24 +26,24 @@ export const SearchPanel = ({param,setParam,users}:SearchPanelProps) =>{
     
     return <form>
         <div>
-            <input type="text" value={param.name} onChange={evt => setParam({
+            <Input type="text" value={param.name} onChange={evt => setParam({
                 // 当setParam发生调用时，更新状态。需要吧param对象展开一个一个来更新所以要用...
                 ...param,
                 name:evt.target.value
             })}/>
-            <select value={param.personId} onChange={evt => setParam({
+            <Select value={param.personId} onChange={value => setParam({
                 ...param,
-                personId:evt.target.value
+                personId:value
             })}>
-                <option value={''}>负责人</option>
+                <Select.Option value={''}>负责人</Select.Option>
                 {
-                    users.map(user=><option value={user.id} key={user.id}>
+                    users.map(user=><Select.Option value={user.id} key={user.id}>
                         {
                             user.name
                         }
-                    </option>)
+                    </Select.Option>)
                 }
-            </select>
+            </Select>
         </div>
     </form>
 }
