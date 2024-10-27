@@ -8,6 +8,7 @@ import { UnauthenticatedApp } from 'unauthenticated-app';
 
 
 function App() {
+    //有user就进登录后的页面，没有就来到登录的页面
   const {user} = useAuth()
   return (
     <div className="App">

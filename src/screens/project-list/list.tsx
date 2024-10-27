@@ -23,6 +23,7 @@ export const List = ({list,users}:ListProps) =>{
             {
                 list.map(project => <tr key={project.id}>
                     <td>{project.name}</td>
+                     {/* 找到与userid匹配的personid的人并输出它的user的名字 加上问号和||时表达了当结果是underfinde没找到时，就返回未知*/}
                     <td>{users.find(user => user.id === project.personId)?.name||'未知'}</td>
                 </tr>
                 )
