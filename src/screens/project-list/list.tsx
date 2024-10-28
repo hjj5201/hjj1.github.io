@@ -17,6 +17,7 @@ interface ListProps {
 export const List = ({list,users}:ListProps) =>{
     return <Table 
     pagination={false} 
+    rowKey="id" // 在这里添加 rowKey
     columns={[
         {
         title:'名称',

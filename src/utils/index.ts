@@ -2,15 +2,27 @@ import { useEffect, useState } from "react";
 
 export const isFalsy = (value:unknown) => value === 0 ? false : !value
 
-//在一个函数里，改变传入的对象本身是不好的
-export const cleanObject = (object:object) =>{
+export const isVoid = (value:unknown) => value ===undefined ||value ===null || value === ''
+
+// Ts中的object很广泛  一下全都不报错
+// let a:object
+// a = {name:'jack'}
+// a= ()=>{   
+// }  如果结构一个函数是没有意义的所以返回空对象
+// a = new RegExp('')
+
+// let b :{[key:string]:unknown}
+// b = {name : 'jack'}
+// b = () =>{
+// }这个函数就报错
+
+//在一个函数里，改变传入的对象本身是不好的   限制类型全都要键值对 用object太广泛了
+export const cleanObject = (object:{[key: string]:unknown}) =>{
     const result = {...object}
     Object.keys(result).forEach(key => {
         //排除了value为0的情况，防止浏览器在搜索栏没有的时候返回空而不是全部
-        //@ts-ignore
         const value = result[key]
-        if(isFalsy(value)){
-            //@ts-ignore
+        if(isVoid(value)){
             delete result[key]
         }
     });
@@ -21,6 +33,8 @@ export const cleanObject = (object:object) =>{
 export const useMount = (callback:() => void) =>{
     useEffect(() =>{
         callback()
+        //TODO 依赖项里加上cllback会造成无限循环，这个和userCallback以及useMemo有关系
+        //eslint-disabel-next-line 
     },[])
 }
 // const debounce = (func, delay) => {
