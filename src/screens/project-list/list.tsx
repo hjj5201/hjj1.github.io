@@ -14,6 +14,16 @@ interface ListProps {
     list:Project[],
     users:User[],
 }
+/**
+ * columns: 定义表格的列。是一个数组，每个元素定义一列的属性，包括：
+    title: 列的标题。
+    dataIndex: 用于从数据源对象中获取数据的字段名。
+    key: 每列的唯一标识，通常与 dataIndex 相同。
+    pagination: 用于配置分页功能，可以设置为 false 以禁用分页，或传递对象以自定义分页行为
+    rowKey: 指定每行数据的唯一标识字段，通常设置为数据源中的某个字段（如 id）。
+ *
+ * 
+ */
 export const List = ({list,users}:ListProps) =>{
     return <Table 
     pagination={false} 
@@ -48,6 +58,7 @@ export const List = ({list,users}:ListProps) =>{
             </span>
         }
     }
+    // dataSource: 表格的数据源，通常是一个数组，包含多个对象。每个对象对应表格中的一行。
 ]} dataSource={list}/>
     // return <table>
     //     <thead>

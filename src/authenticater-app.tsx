@@ -65,6 +65,7 @@ const HeaderItem = styled.h3`
 
 const Container = styled.div`
     /* display: grid; */
+    /* grid-template-rows: 用于定义网格容器的行高。每个值表示对应行的高度 */
     grid-template-rows: 6rem 1fr 6rem;
     height: 100vh;
 `
