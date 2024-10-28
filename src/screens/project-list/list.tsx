@@ -2,6 +2,7 @@ import React from "react"
 import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
+import { TableProps } from "antd/lib/table";
 interface Project {
     id:string;
     name:string;
@@ -10,8 +11,8 @@ interface Project {
     organization:string;
     created:number;
 }
-interface ListProps {
-    list:Project[],
+//把list删掉 因为继承的已经有了
+interface ListProps extends TableProps<Project>{
     users:User[],
 }
 /**
@@ -24,7 +25,8 @@ interface ListProps {
  *
  * 
  */
-export const List = ({list,users}:ListProps) =>{
+// 可以把props直接送给tableprops 这个搞可以动态的将loading交给table
+export const List = ({users,...props}:ListProps) =>{
     return <Table 
     pagination={false} 
     rowKey="id" // 在这里添加 rowKey
@@ -59,7 +61,9 @@ export const List = ({list,users}:ListProps) =>{
         }
     }
     // dataSource: 表格的数据源，通常是一个数组，包含多个对象。每个对象对应表格中的一行。
-]} dataSource={list}/>
+]} //dataSorse将list直接传给props
+{...props}
+/>
     // return <table>
     //     <thead>
     //         <tr>
