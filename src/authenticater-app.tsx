@@ -4,6 +4,9 @@ import { Row } from "components/lib"
 import { useAuth } from "context/auth-context"
 import React from "react"
 import { ProjectListScreen } from "screens/project-list"
+//引入logo图片  这样引入组件样的东西是可以将图片变为svg从而调整样式
+import {ReactComponent as SoftwareLogo} from 'assets/software-logo.svg'
+import { Dropdown, Menu,Button } from "antd"
 
 /**
  * grid和flex布局各种的应用场景
@@ -17,19 +20,27 @@ import { ProjectListScreen } from "screens/project-list"
  */
 
 // import { Button } from "antd"
+
 export const AuthenticaterApp = () =>{
-    const {logout} = useAuth()
+    const {logout,user} = useAuth()
     return <div>
         <Container>
-            <Header between={true}>
+            <Header between={true} marginbottom={1}>
                 {/* 给lib传props */}
                 <HeaderLeft gap={true}>
-                    <h2>Logo</h2>
+                    <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
                     <h2>项目</h2>
                     <h2>用户</h2>
                 </HeaderLeft>
                 <HeaderRight>
-                    <button onClick={logout}>登出</button>
+                    {/* overlay 把鼠标放上去以后显示的下拉框 */}
+                    {/* <Dropdown overlay = {menu}>
+                        <a onClick={e => e.preventDefault()}>
+                            Hi,{user?.name}
+                        </a>
+                    </Dropdown> */}
+                    <h2>Hi,{user?.name}</h2>
+                    <Button onClick={logout}>登出</Button>
                 </HeaderRight>
             </Header>
             <Main>
@@ -38,6 +49,15 @@ export const AuthenticaterApp = () =>{
         </Container>
     </div>
 }
+
+// const menu = (
+//     <Menu>
+//         <Menu.Item key="1">
+//             <a onClick={logout}>登出</a>
+//         </Menu.Item>
+//     </Menu>
+// );
+
 
 const HeaderItem = styled.h3`
     margin-right: 3rem;
@@ -50,6 +70,10 @@ const Container = styled.div`
 `
 // grid-area是用来给grid子元素起名字的
 const Header = styled(Row)`
+padding: 3.2rem;
+box-shadow:0 0 5px 0 rgba(0,0,0,0.1);
+z-index: 1;
+
 `
 //引入lib的css变量
 const HeaderLeft = styled(Row)`

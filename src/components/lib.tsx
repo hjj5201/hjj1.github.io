@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 //代码复用
 export const Row = styled.div<{
     gap?:number|boolean,
-    between?:boolean
+    between?:boolean,
     marginbottom?:number
 }>`
     display: flex;
