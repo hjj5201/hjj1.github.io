@@ -2,14 +2,25 @@ import { useAuth } from "context/auth-context";
 import React, { FormEvent } from "react";
 import {Form,Input,Button} from 'antd'
 import { LongButton } from "unauthenticated-app";
+import { useAsync } from "utils/use-async";
 
 const apiUrl = process.env.REACT_APP_API_URL
-export const RegisterScreen = () =>{
+export const RegisterScreen =  ({onError}:{onError:(error:Error) =>void}) =>{
 
     const {register,user} = useAuth()
+    const {run,isLoading} = useAsync(undefined,{throwOnError:true})
 
-    const handleSubmit = (value:{username:string , password:string}) =>{
-        register(value)
+    const handleSubmit = async({cpassword,...values}:{username:string , password:string ,cpassword:string}) =>{
+        if(cpassword !== values.password)  {
+            onError(new Error('请确认俩次输入的密码相同'))
+            return
+        }
+        //记得查
+        try{
+           await run(register(values))
+        }catch(e){
+            onError(e as Error)
+        }
     }
     /**
      *  onFinish 属性
@@ -25,6 +36,10 @@ export const RegisterScreen = () =>{
         <Form.Item name={'password'} rules={[{required:true , message : '请输入密码'}]}>
             <Input type="password" id={'password'} placeholder={'密码'}/>
         </Form.Item>
+        <Form.Item name={'cpassword'} rules={[{required:true , message : '请确认密码'}]}>
+            <Input type="password" id={'cpassword'} placeholder={'确认密码'}/>
+        </Form.Item>
+
         <Form.Item>
             {/* 这个type是指样式的type 原先的submit放在htmlType里了*/}
             {/* 意义: htmlType 属性用于设置按钮的 HTML 类型。
@@ -35,7 +50,7 @@ export const RegisterScreen = () =>{
                 button: 普通按钮，不会提交表单。
                 reset: 用于重置表单中的输入值。 
             */}
-            <LongButton type={"primary"} htmlType={'submit'}>注册</LongButton>
+            <LongButton type={"primary"} htmlType={'submit'} loading={isLoading}>注册</LongButton>
         </Form.Item>
     </Form>
 }

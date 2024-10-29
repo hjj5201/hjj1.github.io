@@ -13,7 +13,12 @@ const defaultInitialState : State<null> = {
     error:null
 }
 
-export const useAsync = <D>(initialState?: State<D>) =>{
+const defaultConfig = {
+    throwOnError:false
+}
+
+export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof defaultConfig) =>{
+    const config ={...defaultConfig,initalConfig}
     const [state,setState] = useState<State<D>>({
         ...defaultInitialState,
         ...initialState
@@ -40,8 +45,10 @@ export const useAsync = <D>(initialState?: State<D>) =>{
             setData(data)
             return data
         }).catch(error =>{
+            //catch会消化异常,如果不主动抛出，外面是接受不到异常的 就不会显示账号密码错误这类异常
             setError(error)
-            return error
+            if(config.throwOnError) return Promise.reject(error)
+            return Promise.reject(error)
         })
     }
 

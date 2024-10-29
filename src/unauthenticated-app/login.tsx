@@ -3,14 +3,20 @@ import React, { FormEvent } from "react";
 import {Form,Input,Button} from 'antd'
 import Password from "antd/lib/input/Password";
 import { LongButton } from "unauthenticated-app";
-
+import { useAsync } from "utils/use-async";
 const apiUrl = process.env.REACT_APP_API_URL
-export const LoginScreen = () =>{
+export const LoginScreen = ({onError}:{onError:(error:Error) =>void}) =>{
 
     const {login,user} = useAuth()
+    const {run,isLoading} = useAsync(undefined,{throwOnError:true})
 
-    const handleSubmit = (value:{username:string , password:string}) =>{
-        login(value)
+    const handleSubmit = async (values:{username:string , password:string}) =>{
+        //记得查
+        try{
+          await run(login(values))
+        }catch(e){
+            onError(e as Error)
+        }
     }
 
     return <Form  onFinish={handleSubmit}>
@@ -23,7 +29,8 @@ export const LoginScreen = () =>{
         </Form.Item>
         <Form.Item>
             {/* 这个type是指样式的type 原先的submit放在htmlType里了*/}
-            <LongButton type={"primary"} htmlType={'submit'}>登录</LongButton>
+            {/* 这个loading是自带的属性antd */}
+            <LongButton type={"primary"} htmlType={'submit'} loading = {isLoading}>登录</LongButton>
         </Form.Item>
     </Form>
 }

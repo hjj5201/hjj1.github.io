@@ -53,7 +53,7 @@ export const login = (data:{username:string,password:string}) =>{
             // 这个方法会解析响应体并将其转换为 JavaScript 对象。这个解析也是一个异步操作。
           return handleUserResponse(await response.json())
         }else{
-            return Promise.reject(data)
+            return Promise.reject(await response.json())
         }
     })
 }
@@ -78,7 +78,7 @@ export const register = (data:{username:string,password:string}) =>{
         if(response.ok){
           return handleUserResponse(await response.json())
         }else{
-            return Promise.reject(data)
+            return Promise.reject(await response.json())
         }
     })
 }
