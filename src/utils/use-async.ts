@@ -47,6 +47,7 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
         }).catch(error =>{
             //catch会消化异常,如果不主动抛出，外面是接受不到异常的 就不会显示账号密码错误这类异常
             setError(error)
+            // 如果你想在调用 Promise 时根据 config.throwOnError 的值决定是否抛出错误，可以在 catch 块中进行判断。
             if(config.throwOnError) return Promise.reject(error)
             return Promise.reject(error)
         })

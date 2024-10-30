@@ -43,6 +43,7 @@ export const ProjectListScreen = () =>{
         <SearchPanel param={param} setParam={setParam} users={users || []}/>
         {/* 错误时该怎么办 */}
         {error?<Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
+        {/* ataSource 属性是专门用于传递表格的数据源的。你需要将实际的数据（如你的 list）传递给 dataSource，以便 Table 组件能够正确渲染每一行。 */}
         <List dataSource={list|| []} users={users || []} loading={isLoading}/>
     </Container>
 }

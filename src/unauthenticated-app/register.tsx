@@ -12,6 +12,7 @@ export const RegisterScreen =  ({onError}:{onError:(error:Error) =>void}) =>{
 
     const handleSubmit = async({cpassword,...values}:{username:string , password:string ,cpassword:string}) =>{
         if(cpassword !== values.password)  {
+            // new Error('请确认俩次输入的密码相同') 是 JavaScript 中用于创建一个新的错误对象的语法。
             onError(new Error('请确认俩次输入的密码相同'))
             return
         }
