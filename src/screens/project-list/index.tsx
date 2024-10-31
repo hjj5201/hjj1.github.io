@@ -11,6 +11,9 @@ import { useAsync } from "utils/use-async"
 import { Project } from "./list"
 import { useProjects } from "utils/project"
 import { useUers } from "utils/user"
+import { Test } from "./text"
+
+
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
 const apiUrl = process.env.REACT_APP_API_URL
 
@@ -41,6 +44,7 @@ export const ProjectListScreen = () =>{
     useDocumentTitle('项目列表',false)
 
     return <Container>
+        <Test/>
         <h1>项目列表</h1>
         {/* 记得默认传空数组 */}
         <SearchPanel param={param} setParam={setParam} users={users || []}/>
