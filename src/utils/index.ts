@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const isFalsy = (value:unknown) => value === 0 ? false : !value
 
@@ -78,8 +78,10 @@ export const useDebounce = <V>(value:V,delay?:number) =>{
 
 // 用来加载页签呈现什么  当页面卸载时，将title退回之前的title
 export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true ) =>{
-    //记录旧的title
-    const oldTitle = document.title
+    //记录旧的title  利用useRef将旧title保存起来 不会随着声明周期改变而改变
+    const oldTitle =useRef(document.title).current
+    //页面加载时,oldTitle === 旧'React APP'
+    //加载后:oldTitle === 新title
 
     useEffect(()=>{
         document.title = title
@@ -88,8 +90,9 @@ export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true ) =>{
     useEffect(()=>{
         return ()=>{
             if(!keepOnUnmount){
+                //页面卸载如果不指定依赖，读到的就是旧title
                 document.title = oldTitle
             }
         }
-    },[])
+    },[keepOnUnmount,oldTitle])
 }
