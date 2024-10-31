@@ -7,6 +7,10 @@ import { ProjectListScreen } from "screens/project-list"
 //引入logo图片  这样引入组件样的东西是可以将图片变为svg从而调整样式
 import {ReactComponent as SoftwareLogo} from 'assets/software-logo.svg'
 import { Dropdown, Menu,Button } from "antd"
+import {Navigate,Route, Routes} from 'react-router'
+import {BrowserRouter as Router} from 'react-router-dom'
+import { ProjectScreen } from "screens/project"
+import { resetRoute } from "utils"
 
 /**
  * grid和flex布局各种的应用场景
@@ -22,31 +26,22 @@ import { Dropdown, Menu,Button } from "antd"
 // import { Button } from "antd"
 
 export const AuthenticaterApp = () =>{
-    const {logout,user} = useAuth()
+    
     return <div>
-        <Container>
-            <Header between={true} marginbottom={1}>
-                {/* 给lib传props */}
-                <HeaderLeft gap={true}>
-                    <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
-                    <h2>项目</h2>
-                    <h2>用户</h2>
-                </HeaderLeft>
-                <HeaderRight>
-                    {/* overlay 把鼠标放上去以后显示的下拉框 */}
-                    {/* <Dropdown overlay = {menu}>
-                        <a onClick={e => e.preventDefault()}>
-                            Hi,{user?.name}
-                        </a>
-                    </Dropdown> */}
-                    <h2>Hi,{user?.name}</h2>
-                    <Button onClick={logout}>登出</Button>
-                </HeaderRight>
-            </Header>
-            <Main>
-                <ProjectListScreen/>
-            </Main>
-        </Container>
+        
+            <Container>
+                <PageHeader />
+                <Main>
+                <Router>
+                        <Routes >
+                            <Route path="/" element={<Navigate to={'/projects'}/>}/>
+                            <Route path="/projects" element={<ProjectListScreen />} />
+                            <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
+                        </Routes>
+                </Router>
+                </Main>
+            </Container>
+        
     </div>
 }
 
@@ -58,6 +53,30 @@ export const AuthenticaterApp = () =>{
 //     </Menu>
 // );
 
+const PageHeader = () => {
+    const {logout,user} = useAuth()
+    return   <Header between={true} marginbottom={1}>
+    {/* 给lib传props */}
+    <HeaderLeft gap={true}>
+        {/* 点击返回主页 */}
+        <Button type={'link'} onClick={resetRoute}>
+            <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
+        </Button>
+        <h2>项目</h2>
+        <h2>用户</h2>
+    </HeaderLeft>
+    <HeaderRight>
+        {/* overlay 把鼠标放上去以后显示的下拉框 */}
+        {/* <Dropdown overlay = {menu}>
+            <a onClick={e => e.preventDefault()}>
+                Hi,{user?.name}
+            </a>
+        </Dropdown> */}
+        <h2>Hi,{user?.name}</h2>
+        <Button onClick={logout}>登出</Button>
+    </HeaderRight>
+</Header>
+}
 
 const HeaderItem = styled.h3`
     margin-right: 3rem;

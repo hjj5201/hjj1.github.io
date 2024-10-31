@@ -3,6 +3,10 @@ import { User } from "./search-panel";
 import { Table } from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/lib/table";
+//react-router 和 react-router-dom 的关系 类似于 react 和 react-dom/react-native
+import { Link } from "react-router-dom";
+
+// TODO 把所有ID都改为number类型
 export interface Project {
     id:string;
     name:string;
@@ -34,9 +38,12 @@ export const List = ({users,...props}:ListProps) =>{
         {
         title:'名称',
         // 对应的project里面去读name属性
-        dataIndex:'name',
+        // dataIndex:'name',
         // 排序 localeCompare可以排序我们的中文字符
         sorter:(a,b) =>a.name.localeCompare(b.name),
+        render(value,project) {
+            return <Link to={String(project.id)}>{project.name}</Link>
+        }
     },
     {
         title:'部门',
