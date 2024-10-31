@@ -2,7 +2,7 @@ import React from "react"
 import { List } from "./list"
 import { SearchPanel } from "./search-panel"
 import { useState,useEffect } from "react"
-import { cleanObject, useMount,useDebounce } from "utils"
+import { cleanObject, useMount,useDebounce, useDocumentTitle } from "utils"
 import *as qs from "qs"
 import { useHttp } from "utils/http"
 import styled from "@emotion/styled"
@@ -37,6 +37,9 @@ export const ProjectListScreen = () =>{
     // })
     //封装后的初始化user
     const {data:users} = useUers()
+
+    useDocumentTitle('项目列表',false)
+
     return <Container>
         <h1>项目列表</h1>
         {/* 记得默认传空数组 */}

@@ -76,3 +76,20 @@ export const useDebounce = <V>(value:V,delay?:number) =>{
 }
 
 
+// 用来加载页签呈现什么  当页面卸载时，将title退回之前的title
+export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true ) =>{
+    //记录旧的title
+    const oldTitle = document.title
+
+    useEffect(()=>{
+        document.title = title
+    },[title])
+
+    useEffect(()=>{
+        return ()=>{
+            if(!keepOnUnmount){
+                document.title = oldTitle
+            }
+        }
+    },[])
+}
