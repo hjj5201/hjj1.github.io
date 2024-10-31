@@ -4,6 +4,8 @@ import *as auth from 'auth-provider'
 import { User } from "screens/project-list/search-panel"
 import {http} from "utils/http"
 import { useMount } from "utils"
+import { useAsync } from "utils/use-async"
+import { FullPageErrorFallback, FullPageLoading } from "components/lib"
 
 interface AuthFrom{
     username:string,
@@ -33,15 +35,24 @@ AuthContext.displayName = 'AuthContext'
 //给children指定类型，防止在index中报错
 export const AuthProvider = ({children}:{children:ReactNode}) => {
     // 由于初始值为null导致登录状态下已刷新也成user变null导致登出
-    const [user,setUser] = useState<User |null>(null)
+   const {data:user,error,isLoading,isIdle,isError,run,setData:setUser} = useAsync<User | null>()
 
     const login = (form:AuthFrom) => auth.login(form).then(user =>setUser(user))
     const register = (form:AuthFrom) => auth.register(form).then(user =>setUser(user))
     const logout = () => auth.logout().then(user => setUser(null))
     //在页面加载时调用
     useMount(() => {
-        bootstrapUser().then(setUser)
+        run(bootstrapUser())
     })
+    // 当刷新的瞬间不会显现出登录界面的样式 而是加载的样式
+    if(isIdle || isLoading) {
+        return <FullPageLoading></FullPageLoading>
+    }
+    // 设置me请求失败后，给用户弹出整体的错误而不是在登录界面
+    if(isError) {
+        return <FullPageErrorFallback error={error}/>
+    }
+
     return <AuthContext.Provider value={{user,login,register,logout}} children={children}/>
 }
 

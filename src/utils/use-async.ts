@@ -12,7 +12,7 @@ const defaultInitialState : State<null> = {
     data: null,
     error:null
 }
-
+// defaultConfig: 包含一个配置选项 throwOnError，指示在发生错误时是否抛出异常
 const defaultConfig = {
     throwOnError:false
 }

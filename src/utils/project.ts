@@ -3,6 +3,7 @@ import { Project } from "screens/project-list/list";
 import { useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
+// 它的主要功能是使用异步请求来获取项目列表，同时管理加载状态和错误处理。
 export const useProjects = (param? : Partial<Project>) =>{
     const client = useHttp()
     // data另外取名list
