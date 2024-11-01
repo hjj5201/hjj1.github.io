@@ -12,6 +12,7 @@ import { Project } from "./list"
 import { useProjects } from "utils/project"
 import { useUers } from "utils/user"
 import { Test } from "../../components/text-closure"
+import { useUelQueryParam } from "utils/url"
 
 
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
@@ -20,10 +21,12 @@ const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
-    const [param,setParam] = useState({
+    const [,setParam] = useState({
         name:'',
         personId:''
     })
+
+    const [param] = useUelQueryParam(['name','personId'])
     //新建一个LODING状态 给用户一个体验 当页面加载时就呈现
     // const [isLoading,setIsLoading] = useState(false)
     //异常处理
@@ -42,6 +45,8 @@ export const ProjectListScreen = () =>{
     const {data:users} = useUers()
 
     useDocumentTitle('项目列表',false)
+
+    useUelQueryParam(['name'])
 
     return <Container>
         <h1>项目列表</h1>
