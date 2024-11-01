@@ -1,3 +1,5 @@
+//wdyr必须在第一句 检查依赖循环
+import './wdyr'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';

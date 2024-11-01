@@ -16,18 +16,26 @@
 // }
 // // 返回最原始的一个类型
 // // const a = ['jack',12,{gender:'male'}] as const 
+import { useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 /**
  * 返回页面url中，指定键参数值  比如name=骑手&prosonId=18在url上  
+ * 这样写每次渲染都会创建一次新的对象导致循环渲染
+ * 由于searchParams是有useSearchParams创建的，当useMemo的依赖改变后，不会重新渲染一次还
+ * 傻傻的以为是新的searchParams到时有进行一次useMemo这种循环
  */
 export const useUelQueryParam = <K extends string>(keys: K[]) => {
     const [searchParams, setSearchParam] = useSearchParams();
 
     return [
-        keys.reduce((prev: Record<K, string>, key: K) => {
-            return { ...prev, [key]: searchParams.get(key) || '' };
-        }, {} as Record<K, string>), // 明确初始值的类型
+        // 只有searchParams改变时再去运算
+        useMemo(
+            ()=> keys.reduce((prev: Record<K, string>, key: K) => {
+                    return { ...prev, [key]: searchParams.get(key) || '' };
+                }, {} as Record<K, string>), 
+            [searchParams,keys]// 明确初始值的类型
+    ),
         setSearchParam
     ] as const;
 }

@@ -17,7 +17,7 @@ import { useUelQueryParam } from "utils/url"
 
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
 const apiUrl = process.env.REACT_APP_API_URL
-
+//跟踪这个组件，因为是这个组件出了问题
 export const ProjectListScreen = () =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
@@ -25,8 +25,9 @@ export const ProjectListScreen = () =>{
         name:'',
         personId:''
     })
-
-    const [param] = useUelQueryParam(['name','personId'])
+    // https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js  依赖循环机制解析
+    const [keys,setKeys]=useState<('name'|'personId')[]>(['name','personId'])
+    const [param] = useUelQueryParam(keys)
     //新建一个LODING状态 给用户一个体验 当页面加载时就呈现
     // const [isLoading,setIsLoading] = useState(false)
     //异常处理
@@ -58,6 +59,9 @@ export const ProjectListScreen = () =>{
         <List dataSource={list|| []} users={users || []} loading={isLoading}/>
     </Container>
 }
+
+//用这个语法来跟踪
+ProjectListScreen.whyDidYouRender = true
 
 const Container = styled.div`
     padding: 3.2rem;
