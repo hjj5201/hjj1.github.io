@@ -89,6 +89,60 @@ data: 存储成功获取的项目列表。
 错误边界：React 错误边界是一个用于捕获和处理 JavaScript 错误的机制，主要用于防止应用崩溃。当一个错误边界组件的子组件树中的任何一个组件抛出错误时，错误边界能够捕获该错误并渲染一个回退 UI，而不是让整个应用崩溃。
 事件处理的异常是不会被捕获的
 
+迭代器协议：
+
+一个对象被认为是一个迭代器，当它实现了 next() 方法。
+next() 方法返回一个对象，该对象包含两个属性：
+value：当前的值。
+done：一个布尔值，指示迭代是否结束。
+可迭代对象：
+
+一个对象被认为是可迭代的（iterable），当它实现了 Symbol.iterator 方法，返回一个迭代器。
+常见的可迭代对象有数组、字符串、映射、集合等。
+
+比如:function createIterator(array) {
+    let index = 0;
+
+    return {
+        next() {
+            if (index < array.length) {
+                return { value: array[index++], done: false };
+            } else {
+                return { done: true };
+            }
+        }
+    };
+}
+
+const myArray = [1, 2, 3];
+const iterator = createIterator(myArray);
+
+console.log(iterator.next()); // { value: 1, done: false }
+console.log(iterator.next()); // { value: 2, done: false }
+console.log(iterator.next()); // { value: 3, done: false }
+console.log(iterator.next()); // { done: true }
+
+
+Object.fromEntries() 是一个 JavaScript 方法，它将一个键值对的可迭代对象（如数组或 Map）转换为一个对象。这个方法非常方便，特别是在你需要从数组或其他可迭代数据结构构建对象时。
+const entries = [['name', 'Alice'], ['age', 25]];
+const obj = Object.fromEntries(entries);
+console.log(obj); // { name: 'Alice', age: 25 }
+
+使用 useSearchParams() 的基本示例如下：
+
+const [searchParams, setSearchParams] = useSearchParams();
+
+searchParams：这是一个 URLSearchParams 实例，允许你读取查询参数。
+setSearchParams：这是一个函数，用于更新查询参数。
+
+可以使用 searchParams.get(key) 方法来获取特定键的值。例如：
+const name = searchParams.get("name"); // 获取查询参数 name 的值
+
+要更新查询参数，你可以使用 setSearchParams 函数。例如：
+setSearchParams({ name: "Alice", age: "30" });
+
+
+
 
 
 

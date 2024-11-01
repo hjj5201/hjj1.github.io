@@ -21,13 +21,12 @@ const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
-    const [,setParam] = useState({
-        name:'',
-        personId:''
-    })
+
+
+    // 基本类型，可以放到依赖里；组件状态也可以放到依赖里：非组件状态对象绝不可以放到依赖里
     // https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js  依赖循环机制解析
     const [keys,setKeys]=useState<('name'|'personId')[]>(['name','personId'])
-    const [param] = useUelQueryParam(keys)
+    const [param,setParam] = useUelQueryParam(keys)
     //新建一个LODING状态 给用户一个体验 当页面加载时就呈现
     // const [isLoading,setIsLoading] = useState(false)
     //异常处理
@@ -61,7 +60,7 @@ export const ProjectListScreen = () =>{
 }
 
 //用这个语法来跟踪
-ProjectListScreen.whyDidYouRender = true
+// ProjectListScreen.whyDidYouRender = true
 
 const Container = styled.div`
     padding: 3.2rem;
