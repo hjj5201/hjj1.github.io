@@ -141,6 +141,8 @@ const name = searchParams.get("name"); // 获取查询参数 name 的值
 要更新查询参数，你可以使用 setSearchParams 函数。例如：
 setSearchParams({ name: "Alice", age: "30" });
 
+有时候服务器返回的id是数字型,而option的value拿到是字符串型,导致if判断出错，或者显示出来一些内容
+
 
 
 

@@ -46,7 +46,7 @@ export const ProjectListScreen = () =>{
 
     useDocumentTitle('项目列表',false)
 
-    useUelQueryParam(['name'])
+    // useUelQueryParam(['name'])
 
     return <Container>
         <h1>项目列表</h1>

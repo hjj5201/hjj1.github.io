@@ -66,7 +66,7 @@ const Fullpage = styled.div`
     justify-content: center;
     align-items: center;
 `;
-
+//查一下
 export const FullPageLoading = () => (
     <Fullpage>
         <Spin size={"large"} />
