@@ -24,3 +24,42 @@ export const useProjects = (param? : Partial<Project>) =>{
     },[param]);
     return result
 }
+
+// 编辑项目
+export const useEditProject = () =>{
+    const {run,...asyncrResult} = useAsync()
+    const client = useHttp()
+    //给params其他要编辑的信息
+    const mutate = (params:Partial<Project>) => {
+        return run(client(`projects/${params.id}`,
+            {
+                data:params,
+                method:'PATCH'
+            }
+        ))
+    }
+    return {
+        mutate,
+        ...asyncrResult
+    }
+}
+
+// 增加项目
+export const useAddProject = () =>{
+    const {run,...asyncrResult} = useAsync()
+    const client = useHttp()
+    //给params其他要编辑的信息
+    const mutate = (params:Partial<Project>) => {
+        console.log(params);
+        return run(client(`projects/${params.id}`,
+            {
+                data:params,
+                method:'POST'
+            }
+        ))
+    }
+    return {
+        mutate,
+        ...asyncrResult
+    }
+}

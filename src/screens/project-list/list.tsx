@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import { TableProps } from "antd/lib/table";
 //react-router 和 react-router-dom 的关系 类似于 react 和 react-dom/react-native
 import { Link } from "react-router-dom";
+import { Pin } from "components/pin";
+import { useEditProject } from "utils/project";
 
 // TODO 把所有ID都改为number类型
 export interface Project {
@@ -31,10 +33,21 @@ interface ListProps extends TableProps<Project>{
  */
 // 可以把props直接送给tableprops 这个搞可以动态的将loading交给table
 export const List = ({users,...props}:ListProps) =>{
+    const {mutate} = useEditProject()
+    // 由于project是早就知道的，而pin还有传参数才知道导致俩个参数不同步
+    const pinProject = (id:number) => (pin: boolean) =>mutate({id:id,pin})
     return <Table 
     pagination={false} 
     rowKey="id" // 在这里添加 rowKey
     columns={[
+        // 增加收藏栏
+        {
+            title:<Pin checked={true} disabled={true}/>,
+            render(value,project) {
+                return <Pin checked={project.pin} onCheckedChange={pinProject(project.id)}/>
+                // 和pin => pinProject(project.id,pin)是一样的不用柯里化之前
+            }
+        },
         {
         title:'名称',
         // 对应的project里面去读name属性
