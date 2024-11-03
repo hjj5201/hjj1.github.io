@@ -1,5 +1,6 @@
 import { error } from "console";
 import { useState } from "react";
+import { useMemo } from "react";
 
 interface State<D> {
     error: Error | null;
@@ -18,11 +19,18 @@ const defaultConfig = {
 }
 
 export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof defaultConfig) =>{
-    const config ={...defaultConfig,initalConfig}
-    const [state,setState] = useState<State<D>>({
+    const config ={...defaultConfig,...initalConfig}
+    const memoizedInitialState = useMemo(() => ({
         ...defaultInitialState,
         ...initialState
-    })
+    }), [initialState]);
+    const [state,setState] = useState<State<D>>(
+        //     {
+        //     ...defaultInitialState,
+        //     ...initialState,
+        // }
+        memoizedInitialState
+)
 
     const setData = (data:D) => setState ({
         data,

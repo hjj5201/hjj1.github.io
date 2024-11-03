@@ -1,11 +1,13 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import { Form, Input,Select } from "antd";
+import { Project } from "./list";
+import { UserSelect } from "components/user-select";
 
 // 设置使用变量的说明书，即限制变量的类型---强类型
 // 之所以暴露出来是因为list也要用
 export interface User {
-    id:string;
+    id:number;
     name:string;
     email:string;
     title:string;
@@ -15,10 +17,11 @@ export interface User {
 
 interface SearchPanelProps {
     users:User[],
-    param:{
-        name:string,
-        personId:string
-    },
+    param:Partial<Pick<Project,'name' | 'personId'>>
+    // param:{
+    //     name:string,
+    //     personId:string
+    // },
     // 参数里面限制为是param这种类型的，这样子更改param时下面也会同时更改
     setParam:(param:SearchPanelProps['param'])=>void;
 }
@@ -33,19 +36,14 @@ export const SearchPanel = ({param,setParam,users}:SearchPanelProps) =>{
             })}/>
         </Form.Item>
         <Form.Item>
-                <Select value={param.personId} onChange={value => setParam({
+            <UserSelect 
+                defaultOptionName={'负责人'}
+                value={param.personId} 
+                onChange={value => 
+                setParam({
                     ...param,
                     personId:value
-                })}>
-                    <Select.Option value={''}>负责人</Select.Option>
-                    {
-                        users.map(user=><Select.Option value={String(user.id)} key={user.id}>
-                            {
-                                user.name
-                            }
-                        </Select.Option>)
-                    }
-                </Select>
+                    })}/>
             </Form.Item>
     </Form>
 }

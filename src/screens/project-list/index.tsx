@@ -13,7 +13,10 @@ import { useProjects } from "utils/project"
 import { useUers } from "utils/user"
 import { Test } from "../../components/text-closure"
 import { useUelQueryParam } from "utils/url"
+import { useProjectsSearchParams } from "./util"
 
+// 基本类型，可以放到依赖里；组件状态也可以放到依赖里：非组件状态对象绝不可以放到依赖里
+// https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js  依赖循环机制解析
 
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
 const apiUrl = process.env.REACT_APP_API_URL
@@ -22,29 +25,31 @@ export const ProjectListScreen = () =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
 
+    useDocumentTitle('项目列表',false)
 
-    // 基本类型，可以放到依赖里；组件状态也可以放到依赖里：非组件状态对象绝不可以放到依赖里
-    // https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js  依赖循环机制解析
-    const [keys,setKeys]=useState<('name'|'personId')[]>(['name','personId'])
-    const [param,setParam] = useUelQueryParam(keys)
+  
+    // const [keys,setKeys]=useState<('name'|'personId')[]>(['name','personId'])
+    const [param,setParam] = useProjectsSearchParams()
     //新建一个LODING状态 给用户一个体验 当页面加载时就呈现
     // const [isLoading,setIsLoading] = useState(false)
     //异常处理
     // const [error,setError] = useState<null | Error>(null)
     //用于输入数据时不会过度频繁的进行网络请求
-    const debouncedParam = useDebounce(param,200)
+    // const debouncedParam = useDebounce(param ,200)
     // 引入封装的函数
     // const client = useHttp()
     // data另外取名list
-    const { isLoading, error, data: list } = useProjects(debouncedParam);
+    const { isLoading, error, data: list } = useProjects(useDebounce(param ,200));
     // 初始化setusers,只需要在页面渲染的时候触发一次
     // useMount(()=>{
     //     client('users').then(setUsers)
     // })
     //封装后的初始化user
     const {data:users} = useUers()
-
-    useDocumentTitle('项目列表',false)
+    //调试
+    // useEffect(()=>{
+    //     console.log("Current param",param);
+    // },[param.name,param.personId])
 
     // useUelQueryParam(['name'])
 
