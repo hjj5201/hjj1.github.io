@@ -1,6 +1,6 @@
 import { useAsync } from "./use-async";
 import { Project } from "screens/project-list/list";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { cleanObject } from "utils";
 import { useHttp } from "./http";
 // 它的主要功能是使用异步请求来获取项目列表，同时管理加载状态和错误处理。
@@ -8,8 +8,7 @@ export const useProjects = (param? : Partial<Project>) =>{
     const client = useHttp()
     // data另外取名list
     const { run, ...result } = useAsync<Project[]>();
-
-    const fetchProjects = () =>client('projects',{data:cleanObject(param || {})})
+    const fetchProjects = useCallback(() =>client('projects',{data:cleanObject(param || {})}),[param,client])
     useEffect(()=>{
         // 使用useAsync 来获取项目列表异步操作的状态
         run(fetchProjects(),{
@@ -25,7 +24,7 @@ export const useProjects = (param? : Partial<Project>) =>{
         //     setError(error)
         // })
         // .finally(()=> setIsLoading(false));
-    },[param]);
+    },[param,run,fetchProjects]);
     return result
 }
 
