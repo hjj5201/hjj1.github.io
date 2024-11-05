@@ -103,3 +103,21 @@ export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true ) =>{
 // 这意味着浏览器将重定向到该页面的根目录
 export const resetRoute = () => window.location.href = window.location.origin
 
+/**
+ * 返回组件挂载状态，如果还没挂载或者已经卸载，返回false，反之，返回true
+ * 
+ */
+export const useMountedRef = () =>{
+    const mountedRef = useRef(false)
+
+    //页面加载完被调用
+    useEffect(()=>{
+        mountedRef.current = true
+        //卸载时调用
+        return () =>{
+            mountedRef.current = false
+        }
+    })
+    return mountedRef
+}
+
