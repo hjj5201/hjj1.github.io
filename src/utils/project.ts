@@ -8,9 +8,13 @@ export const useProjects = (param? : Partial<Project>) =>{
     const client = useHttp()
     // data另外取名list
     const { run, ...result } = useAsync<Project[]>();
+
+    const fetchProjects = () =>client('projects',{data:cleanObject(param || {})})
     useEffect(()=>{
         // 使用useAsync 来获取项目列表异步操作的状态
-        run(client('projects',{data:cleanObject(param || {})}))
+        run(fetchProjects(),{
+            retry:fetchProjects
+        })
         // // 当请求开始时,就loding  当请求结束后改为false
         // setIsLoading(true)
         // client('projects',{data:cleanObject(debouncedParam)})

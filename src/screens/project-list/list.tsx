@@ -20,6 +20,7 @@ export interface Project {
 //把list删掉 因为继承的已经有了
 interface ListProps extends TableProps<Project>{
     users:User[],
+    refresh?: () => void
 }
 /**
  * columns: 定义表格的列。是一个数组，每个元素定义一列的属性，包括：
@@ -35,7 +36,7 @@ interface ListProps extends TableProps<Project>{
 export const List = ({users,...props}:ListProps) =>{
     const {mutate} = useEditProject()
     // 由于project是早就知道的，而pin还有传参数才知道导致俩个参数不同步
-    const pinProject = (id:number) => (pin: boolean) =>mutate({id:id,pin})
+    const pinProject = (id:number) => (pin: boolean) =>mutate({id:id,pin}).then(props.refresh)
     return <Table 
     pagination={false} 
     rowKey="id" // 在这里添加 rowKey

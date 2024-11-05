@@ -98,5 +98,8 @@ export const useDocumentTitle = (title:string,keepOnUnmount:boolean = true ) =>{
 }
 
 //重置路由的方法
+// window.location.href这个属性返回当前页面的完整 URL，包括协议、主机、端口（如果有的话）以及路径和查询字符串
+// window.location.origin: 这个属性返回当前页面的来源，包含协议、主机和端口（如果有的话），但不包括路径和查询字符串。
+// 这意味着浏览器将重定向到该页面的根目录
 export const resetRoute = () => window.location.href = window.location.origin
 

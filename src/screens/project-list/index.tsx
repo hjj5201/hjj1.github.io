@@ -39,7 +39,8 @@ export const ProjectListScreen = () =>{
     // 引入封装的函数
     // const client = useHttp()
     // data另外取名list
-    const { isLoading, error, data: list } = useProjects(useDebounce(param ,200));
+    // 当编辑时 调用retry来进行刷新 编辑内容就能显示出来
+    const { isLoading, error, data: list ,retry} = useProjects(useDebounce(param ,200));
     // 初始化setusers,只需要在页面渲染的时候触发一次
     // useMount(()=>{
     //     client('users').then(setUsers)
@@ -60,7 +61,7 @@ export const ProjectListScreen = () =>{
         {/* 错误时该怎么办 */}
         {error?<Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
         {/* ataSource 属性是专门用于传递表格的数据源的。你需要将实际的数据（如你的 list）传递给 dataSource，以便 Table 组件能够正确渲染每一行。 */}
-        <List dataSource={list|| []} users={users || []} loading={isLoading}/>
+        <List dataSource={list|| []} users={users || []} loading={isLoading} refresh={retry}/>
     </Container>
 }
 

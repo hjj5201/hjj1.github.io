@@ -31,6 +31,12 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
         // }
         memoizedInitialState
 )
+    // useState直接传入函数的含义是：惰性初始化；所以，要用useState保存函数，不能直接传入函数
+    // https://codesandbox.io/s/blissful-water-230u4?file=/src/App.js
+    // 套俩层为了存储函数
+    const [retry,setRetry] = useState(() => () => {
+
+    })
 
     const setData = (data:D) => setState ({
         data,
@@ -44,10 +50,16 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
         data:null
     })
     //用来触发异步请求
-    const run = (promise : Promise<D>)=> {
+    const run = (promise : Promise<D>,runConfig?:{retry: ()=>Promise<D>})=> {
         if(!promise || !promise.then) {
             throw new Error('请传入 Promise 类型数据')
-        }
+        } 
+          // 使用上一次第promise跑一次
+        setRetry(() => () => {
+            if(runConfig?.retry){
+                run(runConfig?.retry(),runConfig)
+            }
+        })
         setState({...state,stat:'loading'})
         return promise.then(data =>{
             setData(data)
@@ -69,7 +81,9 @@ export const useAsync = <D>(initialState?: State<D>,initalConfig?:typeof default
         run,
         setData,
         setError,
-        ...state
+        // 当retry被调用，就重新跑一遍run 导致编辑之后可以自动刷新 让state刷新一遍
+        retry,
+        ...state,
     }
 
 }
