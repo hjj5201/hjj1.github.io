@@ -149,7 +149,7 @@ setSearchParams({ name: "Alice", age: "30" });
 
 useCallback是特殊类型的useMemo 当依赖里有函数时，多半要用useCallback包裹起来 用于非基本类型的依赖这种要限制  
 
-
+“状态提升”（lifting state up）是 React 中的一种技术，通常用于多个组件之间共享状态。简而言之，当一个组件的状态需要被多个子组件访问或修改时，React 提供了一种方法将该状态提升到它们的父组件中，并通过 props 传递给子组件。
 
 
 

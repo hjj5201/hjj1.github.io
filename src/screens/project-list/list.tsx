@@ -1,12 +1,13 @@
 import React from "react"
 import { User } from "./search-panel";
-import { Table } from "antd";
+import { Dropdown, Menu, Table } from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/lib/table";
 //react-router 和 react-router-dom 的关系 类似于 react 和 react-dom/react-native
 import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
+import { ButtonNoPadding } from "components/lib";
 
 // TODO 把所有ID都改为number类型
 export interface Project {
@@ -20,7 +21,8 @@ export interface Project {
 //把list删掉 因为继承的已经有了
 interface ListProps extends TableProps<Project>{
     users:User[],
-    refresh?: () => void
+    refresh?: () => void,
+    setProjectModalOpen : (isOpen:boolean) => void
 }
 /**
  * columns: 定义表格的列。是一个数组，每个元素定义一列的属性，包括：
@@ -79,6 +81,18 @@ export const List = ({users,...props}:ListProps) =>{
                     project.created ? dayjs(project.created).format('YYYY-MM-DD') : '无'
                 }
             </span>
+        }
+    },
+    {
+        render(value,project) {
+            // overlay的内容是下拉框的内容
+            return <Dropdown overlay={<Menu>
+                <Menu.Item key={'edit'}>
+                    <ButtonNoPadding onClick={() => props.setProjectModalOpen(true)}  type={"link"}>编辑</ButtonNoPadding>
+                </Menu.Item>
+            </Menu>}>
+                <ButtonNoPadding type={"link"}>...</ButtonNoPadding>
+            </Dropdown>
         }
     }
     // dataSource: 表格的数据源，通常是一个数组，包含多个对象。每个对象对应表格中的一行。

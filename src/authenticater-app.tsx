@@ -1,8 +1,8 @@
 //非登录注册页面
 import styled from "@emotion/styled"
-import { Row } from "components/lib"
+import { ButtonNoPadding, Row } from "components/lib"
 import { useAuth } from "context/auth-context"
-import React from "react"
+import React, { useState } from "react"
 import { ProjectListScreen } from "screens/project-list"
 //引入logo图片  这样引入组件样的东西是可以将图片变为svg从而调整样式
 import {ReactComponent as SoftwareLogo} from 'assets/software-logo.svg'
@@ -11,6 +11,8 @@ import {Navigate,Route, Routes} from 'react-router'
 import {BrowserRouter as Router} from 'react-router-dom'
 import { ProjectScreen } from "screens/project"
 import { resetRoute } from "utils"
+import { ProjectModal } from "screens/project-list/project-modal"
+import { ProjectPopover } from "components/project-popover"
 
 /**
  * grid和flex布局各种的应用场景
@@ -25,21 +27,25 @@ import { resetRoute } from "utils"
 
 // import { Button } from "antd"
 
+//状态提升共同父组件
 export const AuthenticaterApp = () =>{
-    
+    //控制抽屉的出现和不出现
+    const [projectModalOpen,setProjectModalOpen] = useState(false)
+
     return <div>
         
             <Container>
-                <PageHeader />
+                <PageHeader setProjectModalOpen={setProjectModalOpen}/>
                 <Main>
                 <Router>
                         <Routes >
                             <Route path="/" element={<Navigate to={'/projects'}/>}/>
-                            <Route path="/projects" element={<ProjectListScreen />} />
+                            <Route path="/projects" element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen}/>} />
                             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                         </Routes>
                 </Router>
                 </Main>
+                <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)}/>
             </Container>
         
     </div>
@@ -53,30 +59,38 @@ export const AuthenticaterApp = () =>{
 //     </Menu>
 // );
 
-const PageHeader = () => {
-    const {logout,user} = useAuth()
+const PageHeader = (props:{setProjectModalOpen : (isOpen:boolean) => void}) => {
     return   <Header between={true} marginbottom={1}>
     {/* 给lib传props */}
     <HeaderLeft gap={true}>
         {/* 点击返回主页 */}
-        <Button type={'link'} onClick={resetRoute}>
+        <ButtonNoPadding type={'link'} onClick={resetRoute}>
             <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
-        </Button>
-        <h2>项目</h2>
-        <h2>用户</h2>
+        </ButtonNoPadding>
+        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen}/>
+        <span>用户</span>
     </HeaderLeft>
     <HeaderRight>
-        {/* overlay 把鼠标放上去以后显示的下拉框 */}
-        {/* <Dropdown overlay = {menu}>
-            <a onClick={e => e.preventDefault()}>
-                Hi,{user?.name}
-            </a>
-        </Dropdown> */}
-        <h2>Hi,{user?.name}</h2>
-        <Button onClick={logout}>登出</Button>
+       {/* overlay 把鼠标放上去以后显示的下拉框 */}
+    {/* <Dropdown overlay = {menu}>
+        <a onClick={e => e.preventDefault()}>
+            Hi,{user?.name}
+        </a>
+    </Dropdown> */}
+        <User/>
     </HeaderRight>
 </Header>
 }
+
+
+const User = () =>{
+    const {logout,user} = useAuth()
+    return  <div>
+        <h2>Hi,{user?.name}</h2>
+        <Button onClick={logout}>登出</Button>
+        </div>
+}
+
 
 const HeaderItem = styled.h3`
     margin-right: 3rem;

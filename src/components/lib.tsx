@@ -37,7 +37,7 @@
 //     <Typography.Text type={"danger"}{error?.message}></Typography.Text>
 // </Fullpage>
 import styled from "@emotion/styled";
-import { Spin, Typography } from "antd";
+import { Spin, Typography,Button } from "antd";
 import { DevTools } from "jira-dev-tool";
 
 // 代码复用
@@ -80,3 +80,8 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
         <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
     </Fullpage>
 );
+
+//抽象一个padding为0的Button组件
+export const ButtonNoPadding = styled(Button)`
+    padding: 0;
+`
