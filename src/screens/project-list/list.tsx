@@ -22,7 +22,7 @@ export interface Project {
 interface ListProps extends TableProps<Project>{
     users:User[],
     refresh?: () => void,
-    setProjectModalOpen : (isOpen:boolean) => void
+    projectButton : JSX.Element
 }
 /**
  * columns: 定义表格的列。是一个数组，每个元素定义一列的属性，包括：
@@ -88,7 +88,7 @@ export const List = ({users,...props}:ListProps) =>{
             // overlay的内容是下拉框的内容
             return <Dropdown overlay={<Menu>
                 <Menu.Item key={'edit'}>
-                    <ButtonNoPadding onClick={() => props.setProjectModalOpen(true)}  type={"link"}>编辑</ButtonNoPadding>
+                    {props.projectButton}
                 </Menu.Item>
             </Menu>}>
                 <ButtonNoPadding type={"link"}>...</ButtonNoPadding>

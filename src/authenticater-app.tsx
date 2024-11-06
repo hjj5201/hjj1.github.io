@@ -35,12 +35,30 @@ export const AuthenticaterApp = () =>{
     return <div>
         
             <Container>
-                <PageHeader setProjectModalOpen={setProjectModalOpen}/>
+                <PageHeader 
+                projectButton={
+                     <ButtonNoPadding 
+                     type={"link"} 
+                     onClick={()=>setProjectModalOpen(true)}
+                     >
+                        创建项目
+                    </ButtonNoPadding>
+                }/>
                 <Main>
                 <Router>
                         <Routes >
                             <Route path="/" element={<Navigate to={'/projects'}/>}/>
-                            <Route path="/projects" element={<ProjectListScreen setProjectModalOpen={setProjectModalOpen}/>} />
+                            <Route path="/projects" element={
+                                <ProjectListScreen   projectButton={
+                                    <ButtonNoPadding 
+                                    type={"link"} 
+                                    onClick={()=>setProjectModalOpen(true)}
+                                    >
+                                       创建项目
+                                   </ButtonNoPadding>
+                               }/>
+                              } 
+                            />
                             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                         </Routes>
                 </Router>
@@ -59,7 +77,9 @@ export const AuthenticaterApp = () =>{
 //     </Menu>
 // );
 
-const PageHeader = (props:{setProjectModalOpen : (isOpen:boolean) => void}) => {
+const PageHeader = (props:{
+    projectButton : JSX.Element
+  }) => {
     return   <Header between={true} marginbottom={1}>
     {/* 给lib传props */}
     <HeaderLeft gap={true}>
@@ -67,7 +87,7 @@ const PageHeader = (props:{setProjectModalOpen : (isOpen:boolean) => void}) => {
         <ButtonNoPadding type={'link'} onClick={resetRoute}>
             <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
         </ButtonNoPadding>
-        <ProjectPopover setProjectModalOpen={props.setProjectModalOpen}/>
+        <ProjectPopover {...props}/>
         <span>用户</span>
     </HeaderLeft>
     <HeaderRight>

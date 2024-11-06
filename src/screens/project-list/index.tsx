@@ -22,7 +22,9 @@ import { Row } from "components/lib"
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
 const apiUrl = process.env.REACT_APP_API_URL
 //跟踪这个组件，因为是这个组件出了问题
-export const ProjectListScreen = (props:{setProjectModalOpen : (isOpen:boolean) => void}) =>{
+export const ProjectListScreen = (props:{
+    projectButton : JSX.Element
+}) =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
 
@@ -58,14 +60,14 @@ export const ProjectListScreen = (props:{setProjectModalOpen : (isOpen:boolean) 
     return <Container>
         <Row between={true}>
             <h1>项目列表</h1>
-            <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button>
+            {props.projectButton}
         </Row>
         {/* 记得默认传空数组 */}
         <SearchPanel param={param} setParam={setParam} users={users || []}/>
         {/* 错误时该怎么办 */}
         {error?<Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
         {/* ataSource 属性是专门用于传递表格的数据源的。你需要将实际的数据（如你的 list）传递给 dataSource，以便 Table 组件能够正确渲染每一行。 */}
-        <List dataSource={list|| []} users={users || []} loading={isLoading} refresh={retry} setProjectModalOpen ={props.setProjectModalOpen}/>
+        <List dataSource={list|| []} users={users || []} loading={isLoading} refresh={retry} projectButton={props.projectButton}/>
     </Container>
 }
 

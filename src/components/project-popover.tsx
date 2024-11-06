@@ -5,7 +5,10 @@ import React from "react";
 import { useProjects } from "utils/project";
 import { ButtonNoPadding } from "./lib";
 
-export const ProjectPopover = (props:{setProjectModalOpen : (isOpen:boolean) => void}) =>{
+export const ProjectPopover = (props:
+    {
+        projectButton : JSX.Element
+    }) =>{
 
     // 获取项目
     const {data:projects,isLoading} = useProjects()
@@ -23,7 +26,7 @@ export const ProjectPopover = (props:{setProjectModalOpen : (isOpen:boolean) => 
         </List>
         {/* 分隔线 */}
         <Divider/>
-        <ButtonNoPadding type={"link"} onClick={()=>props.setProjectModalOpen(true)}>创建项目</ButtonNoPadding>
+        {props.projectButton}
     </ContentContainer>
 
     // 该属性表示下拉列表从下面拉出来
