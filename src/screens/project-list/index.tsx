@@ -13,8 +13,9 @@ import { useProjects } from "utils/project"
 import { useUers } from "utils/user"
 import { Test } from "../../components/text-closure"
 import { useUelQueryParam } from "utils/url"
-import { useProjectsSearchParams } from "./util"
-import { Row } from "components/lib"
+import { useProjectModal, useProjectsSearchParams } from "./util"
+import { ErrorBox, Row } from "components/lib"
+import { ButtonNoPadding } from "components/lib"
 
 // 基本类型，可以放到依赖里；组件状态也可以放到依赖里：非组件状态对象绝不可以放到依赖里
 // https://codesandbox.io/s/keen-wave-tlz9s?file=/src/App.js  依赖循环机制解析
@@ -22,14 +23,13 @@ import { Row } from "components/lib"
 // 读取网络地址提取数据的变量通过env来搞，这样子做可以不用操作源代码的基础上进行更改后端接口
 const apiUrl = process.env.REACT_APP_API_URL
 //跟踪这个组件，因为是这个组件出了问题
-export const ProjectListScreen = (props:{
-    projectButton : JSX.Element
-}) =>{
+export const ProjectListScreen = () =>{
     // const [users,setUsers] = useState([])
     // const [list,setList] = useState([])
 
     useDocumentTitle('项目列表',false)
 
+    const {open} = useProjectModal()
   
     // const [keys,setKeys]=useState<('name'|'personId')[]>(['name','personId'])
     const [param,setParam] = useProjectsSearchParams()
@@ -43,7 +43,7 @@ export const ProjectListScreen = (props:{
     // const client = useHttp()
     // data另外取名list
     // 当编辑时 调用retry来进行刷新 编辑内容就能显示出来
-    const { isLoading, error, data: list ,retry} = useProjects(useDebounce(param ,200));
+    const { isLoading, error, data: list } = useProjects(useDebounce(param ,200));
     // 初始化setusers,只需要在页面渲染的时候触发一次
     // useMount(()=>{
     //     client('users').then(setUsers)
@@ -60,14 +60,19 @@ export const ProjectListScreen = (props:{
     return <Container>
         <Row between={true}>
             <h1>项目列表</h1>
-            {props.projectButton}
+            <ButtonNoPadding
+            onClick={open}
+            type={"link"}
+        >
+            创建项目
+        </ButtonNoPadding>
         </Row>
         {/* 记得默认传空数组 */}
         <SearchPanel param={param} setParam={setParam} users={users || []}/>
         {/* 错误时该怎么办 */}
-        {error?<Typography.Text type={"danger"}>{error.message}</Typography.Text> : null}
+        <ErrorBox error={error}/>
         {/* ataSource 属性是专门用于传递表格的数据源的。你需要将实际的数据（如你的 list）传递给 dataSource，以便 Table 组件能够正确渲染每一行。 */}
-        <List dataSource={list|| []} users={users || []} loading={isLoading} refresh={retry} projectButton={props.projectButton}/>
+        <List dataSource={list|| []} users={users || []} loading={isLoading} />
     </Container>
 }
 

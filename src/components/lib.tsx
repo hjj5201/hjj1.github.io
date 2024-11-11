@@ -77,9 +77,21 @@ export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
     <Fullpage>
         {/* 防止me获取错误导致呈现错误页面没有齿轮了 */}
         <DevTools/>
-        <Typography.Text type={"danger"}>{error?.message}</Typography.Text>
+        <ErrorBox error ={error}/>
     </Fullpage>
 );
+
+//类型守卫  当符合这个条件时即有value.message时，将value的类型改为ERROR，也就是将传入的值改为Error属性
+const isError = (value:any):value is Error => value?.message
+
+//封装一个可以自行判定是否为Error属性，当是的话就返回一个盒子
+export const ErrorBox = ({error}:{error:unknown}) => {
+    // 只要有message属性，我们就可以认为是error   报错原因是error为unknow不能读 所以要用类型守卫
+    if(isError(error)) {
+        return <Typography.Text type={"danger"}>{error?.message}</Typography.Text> 
+    }
+    return null
+}   
 
 //抽象一个padding为0的Button组件
 export const ButtonNoPadding = styled(Button)`

@@ -4,11 +4,11 @@ import { Popover,Typography,List, Divider,Button } from "antd";
 import React from "react";
 import { useProjects } from "utils/project";
 import { ButtonNoPadding } from "./lib";
+import { useProjectModal } from "screens/project-list/util";
 
-export const ProjectPopover = (props:
-    {
-        projectButton : JSX.Element
-    }) =>{
+export const ProjectPopover = () =>{
+
+    const {open} = useProjectModal()
 
     // 获取项目
     const {data:projects,isLoading} = useProjects()
@@ -26,7 +26,12 @@ export const ProjectPopover = (props:
         </List>
         {/* 分隔线 */}
         <Divider/>
-        {props.projectButton}
+        <ButtonNoPadding
+            onClick={open}
+            type={"link"}
+        >
+            创建项目
+        </ButtonNoPadding>
     </ContentContainer>
 
     // 该属性表示下拉列表从下面拉出来

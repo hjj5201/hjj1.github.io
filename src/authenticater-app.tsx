@@ -30,40 +30,27 @@ import { ProjectPopover } from "components/project-popover"
 //状态提升共同父组件
 export const AuthenticaterApp = () =>{
     //控制抽屉的出现和不出现
-    const [projectModalOpen,setProjectModalOpen] = useState(false)
+   
 
     return <div>
         
             <Container>
-                <PageHeader 
-                projectButton={
-                     <ButtonNoPadding 
-                     type={"link"} 
-                     onClick={()=>setProjectModalOpen(true)}
-                     >
-                        创建项目
-                    </ButtonNoPadding>
-                }/>
+            <Router>
+                <PageHeader/>
                 <Main>
-                <Router>
+                
                         <Routes >
                             <Route path="/" element={<Navigate to={'/projects'}/>}/>
                             <Route path="/projects" element={
-                                <ProjectListScreen   projectButton={
-                                    <ButtonNoPadding 
-                                    type={"link"} 
-                                    onClick={()=>setProjectModalOpen(true)}
-                                    >
-                                       创建项目
-                                   </ButtonNoPadding>
-                               }/>
+                                <ProjectListScreen/>
                               } 
                             />
                             <Route path="/projects/:projectId/*" element={<ProjectScreen />} />
                         </Routes>
-                </Router>
+                
                 </Main>
-                <ProjectModal projectModalOpen={projectModalOpen} onClose={() => setProjectModalOpen(false)}/>
+                <ProjectModal/>
+                </Router>
             </Container>
         
     </div>
@@ -77,9 +64,7 @@ export const AuthenticaterApp = () =>{
 //     </Menu>
 // );
 
-const PageHeader = (props:{
-    projectButton : JSX.Element
-  }) => {
+const PageHeader = () => {
     return   <Header between={true} marginbottom={1}>
     {/* 给lib传props */}
     <HeaderLeft gap={true}>
@@ -87,7 +72,7 @@ const PageHeader = (props:{
         <ButtonNoPadding type={'link'} onClick={resetRoute}>
             <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
         </ButtonNoPadding>
-        <ProjectPopover {...props}/>
+        <ProjectPopover/>
         <span>用户</span>
     </HeaderLeft>
     <HeaderRight>

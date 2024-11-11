@@ -12,3 +12,19 @@ export const useProjectsSearchParams = () =>{
         setParam
     ] as const
 }
+
+//新建hook  全局状态管理抽屉关闭还是开启
+export const useProjectModal = () => {
+    const [{projectCreate},setProjectCreate] = useUelQueryParam([
+        'projectCreate'
+    ])
+
+    const open = () => setProjectCreate({projectCreate:true})
+    const close = () => setProjectCreate({projectCreate:undefined})
+
+    return {
+        projectModalOpen: projectCreate === 'true',
+        open,
+        close
+    }
+}
