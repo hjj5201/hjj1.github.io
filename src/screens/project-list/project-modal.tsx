@@ -1,7 +1,7 @@
 //抽屉组件
 import React, { useEffect } from 'react';
 import { Drawer, Button, Spin,Form,Input } from 'antd';
-import { useProjectModal } from './util';
+import { useProjectModal, useProjectsQueryKey } from './util';
 import { UserSelect } from 'components/user-select';
 import { useAddProject, useEditProject } from 'utils/project';
 import { useForm } from 'antd/lib/form/Form';
@@ -13,7 +13,7 @@ export const ProjectModal = () => {
   const title = editingProject ? '编辑项目' : '创建项目'
   // 判断为编辑还是创建
   const useMutateProject = editingProject ? useEditProject: useAddProject
-  const {mutateAsync,error,isLoading:mutateLoading} = useMutateProject()
+  const {mutateAsync,error,isLoading:mutateLoading} = useMutateProject(useProjectsQueryKey())
   // 重置表单
   const [form] = useForm()
   const onFinish = (values:any) => {

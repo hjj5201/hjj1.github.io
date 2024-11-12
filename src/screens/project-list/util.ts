@@ -15,6 +15,11 @@ export const useProjectsSearchParams = () =>{
     ] as const
 }
 
+export const useProjectsQueryKey = () =>  {
+    const [params] = useProjectsSearchParams()
+     return ['projects',params]
+}
+
 //新建hook  全局状态管理抽屉关闭还是开启
 export const useProjectModal = () => {
     // 用这个url参数来判断现在是不是创建
