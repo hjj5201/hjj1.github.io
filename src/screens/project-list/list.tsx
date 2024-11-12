@@ -6,8 +6,9 @@ import { TableProps } from "antd/lib/table";
 //react-router 和 react-router-dom 的关系 类似于 react 和 react-dom/react-native
 import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
-import { useEditProject } from "utils/project";
+import { useEditProject, useProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
+import { useProjectModal } from "./util";
 
 // TODO 把所有ID都改为number类型
 export interface Project {
@@ -35,8 +36,12 @@ interface ListProps extends TableProps<Project>{
 // 可以把props直接送给tableprops 这个搞可以动态的将loading交给table
 export const List = ({users,...props}:ListProps) =>{
     const {mutate} = useEditProject()
+
+    const {startEdit} = useProjectModal()
+
     // 由于project是早就知道的，而pin还有传参数才知道导致俩个参数不同步
     const pinProject = (id:number) => (pin: boolean) =>mutate({id:id,pin})
+    const editProject = (id:number)  => () => startEdit(id)
     return <Table 
     pagination={false} 
     rowKey="id" // 在这里添加 rowKey
@@ -85,8 +90,11 @@ export const List = ({users,...props}:ListProps) =>{
         render(value,project) {
             // overlay的内容是下拉框的内容
             return <Dropdown overlay={<Menu>
-                <Menu.Item key={'edit'}>
-                    
+                <Menu.Item key={'edit'} onClick={editProject(project.id)}>
+                    编辑
+                </Menu.Item>
+                <Menu.Item key={"delete"}>
+                    删除
                 </Menu.Item>
             </Menu>}>
                 <ButtonNoPadding type={"link"}>...</ButtonNoPadding>

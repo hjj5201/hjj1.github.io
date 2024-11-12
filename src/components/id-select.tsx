@@ -9,8 +9,8 @@ type SelectProps = React.ComponentProps<typeof Select >
 
 //继承SelectProps 删掉SelectProps的重叠属性防止冲突报错
 interface IdSelectProps extends Omit<SelectProps, 'value'|'onChange'|'options' > {
-    value: Raw | null | undefined
-    onChange:(value?:number) => void
+    value?: Raw | null | undefined
+    onChange?:(value?:number) => void
     // 作为默认值作为空值存在
     defaultOptionName?:string
     options?:{ name: string, id: number}[]
@@ -29,7 +29,7 @@ export const IdSelect = (props:IdSelectProps) =>{
     // 当toNumber(value)不为0时就代表用户选择了有效的项，选择默认项就undifind
     return <Select 
     value ={toNumber(value)} 
-    onChange={value => onChange(toNumber(value) || undefined)}
+    onChange={value => onChange?.(toNumber(value) || undefined)}
     {...restProps}
     >
         {

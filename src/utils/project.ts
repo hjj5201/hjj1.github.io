@@ -30,7 +30,8 @@ export const useAddProject = () =>{
     const client = useHttp()
     const queryClient = useQueryClient()
     return useMutation(
-        (param:Partial<Project>) => client(`projects/${param.id}`,{
+        //给params其他要编辑的信息
+        (param:Partial<Project>) => client(`projects`,{
             data:param,
             method:"POST"
         }),{
@@ -38,6 +39,18 @@ export const useAddProject = () =>{
         }
         
     )
+}
 
-    //给params其他要编辑的信息
+//获取project详情
+export const useProject = (id?:number) => {
+    const client = useHttp()
+    return useQuery<Project>(
+        ['project',{id}],
+        () => client(`projects/${id}`),
+        // 配置参数
+        {
+            // 当id有值时采取触发获取详情
+            enabled:Boolean(id)
+        }
+    )
 }
