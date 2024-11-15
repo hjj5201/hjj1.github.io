@@ -16,7 +16,7 @@
 // }
 // // 返回最原始的一个类型
 // // const a = ['jack',12,{gender:'male'}] as const 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo,useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { cleanObject } from "utils";
 import { URLSearchParamsInit } from "react-router-dom"; 
@@ -29,7 +29,8 @@ import { URLSearchParamsInit } from "react-router-dom";
  */
 export const useUelQueryParam = <K extends string>(keys: K[]) => {
     const [searchParams, setSearchParam] = useSearchParams();
-
+    const setSearchParams = useSetUrlSearchParam()
+    const [stateKeys] = useState(keys)
     // 调试使用
     // useEffect(() => {
     //     console.log("Current searchParams:", Array.from(searchParams.entries()));
@@ -55,11 +56,19 @@ export const useUelQueryParam = <K extends string>(keys: K[]) => {
             [searchParams]// 明确初始值的类型
     ),//对象的键值一定是限制在K里面取 值的类型unknow
         (params:Partial<{[key in K]:unknown}>) =>{
-            // iterator 可以掌握遍历规则
+            return setSearchParams(params)
+        }
+    ] as const;
+}
+
+//单独的hook来设置setsearchParams
+export const useSetUrlSearchParam = () => {
+    const [searchParams, setSearchParam] = useSearchParams();
+    return (params : { [key in string] : unknown}) => {
+        // iterator 可以掌握遍历规则
             // Object.fromEntries() 是一个 JavaScript 方法，它将一个键值对的可迭代对象（如数组或 Map）转换为一个对象。这个方法非常方便，特别是在你需要从数组或其他可迭代数据结构构建对象时。
             // 读取现在的参数把变成对象，再把新传入的对象覆盖住
             const o = cleanObject({...Object.fromEntries(searchParams),...params}) as URLSearchParamsInit
             return setSearchParam(o)
-        }
-    ] as const;
+    }
 }

@@ -2,7 +2,7 @@
 // 项目列表搜索的参数
 import { useEffect, useMemo } from "react"
 import { useProject } from "utils/project"
-import { useUelQueryParam } from "utils/url"
+import { useSetUrlSearchParam, useUelQueryParam } from "utils/url"
 import { useSearchParams } from "react-router-dom"
 export const useProjectsSearchParams = () =>{
     const [param,setParam] = useUelQueryParam(["name","personId"])
@@ -35,11 +35,12 @@ export const useProjectModal = () => {
     // 获取projects详情
     const {data:editingProject,isLoading} = useProject(Number(editingProjectId))
 
-    const [_, setUrlParams] = useSearchParams();
+    const setUrlParams = useSetUrlSearchParam();
 
     const open = () => setProjectCreate({projectCreate:true})
     const close = () => setUrlParams({
-        
+        projectCreate:"",
+        editingProjectId:""
         // setProjectCreate({projectCreate:undefined})
         // setEditingProjectId({editingProjectId:undefined})
     })

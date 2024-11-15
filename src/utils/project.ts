@@ -17,8 +17,9 @@ export const useProjects = (param? : Partial<Project>) =>{
 // 编辑项目
 export const useEditProject = (queryKey:QueryKey) =>{
     const client = useHttp()
-    const queryClient = useQueryClient()
-    const [searchParams] = useProjectsSearchParams()
+    // const queryClient = useQueryClient()
+    // const [searchParams] = useProjectsSearchParams()
+    // console.log(searchParams);
     return useMutation((param:Partial<Project>) => client(`projects/${param.id}`,{
         data:param,
         method:"PATCH",
