@@ -48,7 +48,7 @@ export const useProjectModal = () => {
 
     return {
         // 他们俩个任意有值的时候都要打开模态框
-        projectModalOpen:projectCreate === "true" || Boolean(editingProject),
+        projectModalOpen:projectCreate === "true" || Boolean(editingProjectId),
         //  projectCreate === 'true' || Boolean(editingProject)
         open,
         close,

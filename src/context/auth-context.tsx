@@ -6,6 +6,7 @@ import {http} from "utils/http"
 import { useMount } from "utils"
 import { useAsync } from "utils/use-async"
 import { FullPageErrorFallback, FullPageLoading } from "components/lib"
+import { useQueryClient } from "react-query"
 
 interface AuthFrom{
     username:string,
@@ -36,10 +37,15 @@ AuthContext.displayName = 'AuthContext'
 export const AuthProvider = ({children}:{children:ReactNode}) => {
     // 由于初始值为null导致登录状态下已刷新也成user变null导致登出
    const {data:user,error,isLoading,isIdle,isError,run,setData:setUser} = useAsync<User | null>()
+    const queryClient = useQueryClient()
 
     const login = (form:AuthFrom) => auth.login(form).then(user =>setUser(user))
     const register = (form:AuthFrom) => auth.register(form).then(user =>setUser(user))
-    const logout = () => auth.logout().then(user => setUser(null))
+    const logout = () => auth.logout().then(() =>{ 
+        setUser(null)
+        // 登出之后将useQUERY获取的所有数据全部清除掉
+        queryClient.clear()
+    })
     //在页面加载时调用
     useMount(() => {
         run(bootstrapUser())

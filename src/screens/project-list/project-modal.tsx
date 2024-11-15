@@ -23,14 +23,19 @@ export const ProjectModal = () => {
       close()
     })
   }
-
+    // 关掉抽屉后要重置input框内容，防止编辑的内容出现在创建项目里面
+    const closeModal = () => {
+      // 重置输入框的内容
+      form.resetFields()
+      close()
+    }
     //当editingProjecr（主要）改变时重置表单 
     useEffect(()=>{
       form.setFieldsValue(editingProject)
     },[editingProject,form])
 
   return (
-    <Drawer width="100%" visible={projectModalOpen} onClose={close} forceRender={true}>
+    <Drawer width="100%" visible={projectModalOpen} onClose={closeModal} forceRender={true}>
       <Container>
       {
         isLoading ? <Spin size={"large"}/> : <>
