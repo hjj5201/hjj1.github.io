@@ -1,7 +1,7 @@
 import React from "react"
 import { useEffect, useState } from "react"
 import { Form, Input,Select } from "antd";
-import { Project } from "./list";
+import { Project } from "types/project";
 import { UserSelect } from "components/user-select";
 
 // 设置使用变量的说明书，即限制变量的类型---强类型

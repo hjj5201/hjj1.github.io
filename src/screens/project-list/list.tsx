@@ -9,16 +9,9 @@ import { Pin } from "components/pin";
 import { useDeleteProject, useEditProject, useProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
 import { useProjectModal, useProjectsQueryKey } from "./util";
+import { Project } from "types/project";
 
-// TODO 把所有ID都改为number类型
-export interface Project {
-    id:number;
-    name:string;
-    personId:number;
-    pin:boolean;
-    organization:string;
-    created:number;
-}
+
 //把list删掉 因为继承的已经有了
 interface ListProps extends TableProps<Project>{
     users:User[],
