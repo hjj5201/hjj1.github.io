@@ -38,16 +38,18 @@ export const ProjectScreen = () =>{
 }
 
 const Aside = styled.aside`
-    background-color: rgb(244,245,247);
-    display: flex;
-`
+  background-color: rgb(244, 245, 247);
+  display: flex;
+`;
 
-const Main  = styled.div`
-    box-shadow: -5px 0 5px -5px rgba(0,0,0,0.1);
-    display: flex;
-`
+const Main = styled.div`
+  box-shadow: -5px 0 5px -5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  overflow: hidden;
+`;
 
 const Container = styled.div`
-    display:grid;
-    grid-template-columns: 16rem 1fr
-`
+  display: grid;
+  grid-template-columns: 16rem 1fr;
+  width: 100%;
+`;

@@ -6,6 +6,7 @@ import { useTaskTypes } from "utils/task-type";
 import taskIcon from 'assets/task.svg'
 import bugIcon from 'assets/bug.svg'
 import { Card } from "antd";
+import { CreateTask } from "./create-task";
 
 // 获取tasktype列表，根据id来渲染图片
 const TaskTypeIcon = ({id}:{id:number}) => {
@@ -32,11 +33,12 @@ export const KanbanColumn = ({kanban}:{kanban:Kanban}) => {
                 </div>
                     <TaskTypeIcon id={task.typeId}/>
                 </Card>)}
+                <CreateTask kanbanId={kanban.id}/>
         </TasksContainer>
     </Container>
 }
 
-const Container = styled.div`
+export const Container = styled.div`
     min-width: 27rem;
     border-radius: 6px;
     background-color: rgb(244,245,247);
@@ -44,7 +46,7 @@ const Container = styled.div`
     flex-direction: column;
     padding: 0.7rem 0.7rem 1rem;
     margin-right: 1.5rem;
-
+    /* overflow: hidden; */
 `
 
 // 超出容器的时候才出现滚动条
