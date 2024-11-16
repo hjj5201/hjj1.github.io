@@ -5,6 +5,7 @@ import { useKanbanSearchParams, useProjectIdInUrl, useProjectInUrl } from "./uti
 import { KanbanColumn } from "./kanban-column";
 import { Divider } from "antd";
 import styled from "@emotion/styled";
+import { SearchPanel } from "./serach-panel";
 
 export const KanbanScreen = () =>{
     useDocumentTitle('看板列表')
@@ -12,6 +13,7 @@ export const KanbanScreen = () =>{
     const {data:kanbans} = useKanbans(useKanbanSearchParams())
     return <div>
         <h1>{currentProject?.name}看板</h1>
+        <SearchPanel/>
        <ColumnsContainer>
        {
              kanbans?.map(kanban => <KanbanColumn key={kanban.id} kanban={kanban}/>)

@@ -1,6 +1,7 @@
 import { useLocation } from "react-router"
 import { useProject } from "utils/project"
-
+import { useUelQueryParam } from "utils/url"
+import { useMemo } from "react"
 // 获取url里的project的ID
 export const useProjectIdInUrl = () => {
     // 获得url路径部分 URL 的路径部分指的是 URL 中位于域名之后，查询字符串 (?) 和哈希 (#) 之前的部分
@@ -18,6 +19,21 @@ export const useKanbanSearchParams = () => ({projectId: useProjectIdInUrl()})
 
 export const useKanbansQueryKey = () => ['kanbans',useKanbanSearchParams()]
 
-export const useTaskSearchParams = () => ({projectId: useProjectIdInUrl()})
+export const useTaskSearchParams = () => {
+    const [param,setParam] = useUelQueryParam([
+        'name',
+        'typeId',
+        'processorId',
+        'tagId'
+    ])
+    const projectId = useProjectIdInUrl()
+    return useMemo(() =>({
+        projectId,
+        typeId:Number(param.typeId)||undefined,
+        processorId:Number(param.processorId) || undefined,
+        tagId:Number(param.tagId)||undefined,
+        name:param.name
+    }),[projectId,param])
+}
 
 export const useTasksQueryKey = () => ['tasks',useTaskSearchParams()]
