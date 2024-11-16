@@ -118,7 +118,11 @@ z-index: 1;
 const HeaderLeft = styled(Row)`
 `
 const HeaderRight = styled.div``;
-const Main = styled.main`grid-area:main`;
+const Main = styled.main`
+/* display: flex;
+overflow: hidden; */
+/* grid-area:main */
+`;
 
 
 
