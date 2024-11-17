@@ -28,3 +28,45 @@ export const useAddTask = (queryKey:QueryKey) =>{
         useAddConfig(queryKey)
     )
 }
+
+//获取看板详情
+export const useTask = (id?:number) => {
+    const client = useHttp()
+    return useQuery<Task>(
+        ['task',{id}],
+        () => client(`tasks/${id}`),
+        // 配置参数
+        {
+            // 当id有值时采取触发获取详情
+            enabled:Boolean(id)
+        }
+    )
+}
+
+// 编辑task
+export const useEditTask = (queryKey:QueryKey) =>{
+    const client = useHttp()
+    // const queryClient = useQueryClient()
+    // const [searchParams] = useProjectsSearchParams()
+    // console.log(searchParams);
+    return useMutation((param:Partial<Task>) => client(`tasks/${param.id}`,{
+        data:param,
+        method:"PATCH",
+    }),
+    useEditConfig(queryKey)
+ ) 
+  
+}
+
+// 删除task
+export const useDeleteTask = (queryKey:QueryKey) =>{
+    const client = useHttp()
+    return useMutation(
+        //给params其他要编辑的信息
+        ({id}:{id:number}) => client(`tasks/${id}`,{
+            method:"DELETE"
+        }),
+        useDeleteConfig(queryKey)
+    )
+}
+

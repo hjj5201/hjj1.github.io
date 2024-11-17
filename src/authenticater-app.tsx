@@ -119,9 +119,9 @@ const HeaderLeft = styled(Row)`
 `
 const HeaderRight = styled.div``;
 const Main = styled.main`
-display: flex;
+/* display: flex;
 overflow: hidden;
-/* grid-area:main */
+grid-area:main */
 `;
 
 

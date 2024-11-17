@@ -26,3 +26,15 @@ export const useAddKanban = (queryKey:QueryKey) =>{
         useAddConfig(queryKey)
     )
 }
+
+// 删除看板
+export const useDeleteKanban = (queryKey:QueryKey) =>{
+    const client = useHttp()
+    return useMutation(
+        //给params其他要编辑的信息
+        ({id}:{id:number}) => client(`kanbans/${id}`,{
+            method:"DELETE"
+        }),
+        useDeleteConfig(queryKey)
+    )
+}
