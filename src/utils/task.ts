@@ -3,9 +3,9 @@ import { useHttp } from "./http"
 import { Kanban } from "types/kanban"
 import { Task } from "types/task"
 import { useProjectsSearchParams } from "screens/project-list/util";
-import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig, useReorderConfig } from "./use-optimistic-options";
 import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
-
+import { SortProps } from "./kanban";
 
 
 //获取看板列表的hook
@@ -67,6 +67,20 @@ export const useDeleteTask = (queryKey:QueryKey) =>{
             method:"DELETE"
         }),
         useDeleteConfig(queryKey)
+    )
+}
+
+// 实现持久化,存储在数据库里
+export const useReorderTask = (queryKey:QueryKey) => {
+    const client = useHttp()
+    return useMutation(
+        (params:SortProps ) => {
+            return client('tasks/reorder',{
+                data:params,
+                method:'POST'
+            })
+        },
+        useReorderConfig(queryKey)
     )
 }
 

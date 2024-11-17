@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "@emotion/styled";
 import { Kanban } from "types/kanban";
 import { useTasks } from "utils/task";
@@ -5,83 +6,96 @@ import { useKanbansQueryKey, useTaskSearchParams, useTasksModal } from "./util";
 import { useTaskTypes } from "utils/task-type";
 import taskIcon from 'assets/task.svg'
 import bugIcon from 'assets/bug.svg'
-import { Button, Card, Dropdown, Menu,Modal} from "antd";
+import { Button, Card, Dropdown, Menu, Modal } from "antd";
 import { CreateTask } from "./create-task";
 import { Task } from "types/task";
 import { Mark } from "components/mark";
 import { useDeleteKanban } from "utils/kanban";
 import { Row } from "components/lib";
+import { Drag, Drop, DropChild } from "components/drag-and-drop";
 
 
 
 // 获取tasktype列表，根据id来渲染图片
-const TaskTypeIcon = ({id}:{id:number}) => {
-    const {data:taskTypes} = useTaskTypes()
+const TaskTypeIcon = ({ id }: { id: number }) => {
+    const { data: taskTypes } = useTaskTypes()
     const name = taskTypes?.find(taskType => taskType.id === id)?.name
-    if(!name) {
+    if (!name) {
         return null
     }
-    return <img src={name === 'task'? taskIcon : bugIcon } alt={'task-icon'}/>
+    return <img src={name === 'task' ? taskIcon : bugIcon} alt={'task-icon'} />
 }
 
-const TaskCard = ({task}:{task:Task}) => {
-    const {startEdit} = useTasksModal()
-    const {name:keyword} = useTaskSearchParams()
-    return(  
-        <Card key={task.id} style={{marginBottom:'0.5rem',cursor:'pointer'}} 
-        onClick={() => startEdit(task.id)}>
+const TaskCard = ({ task }: { task: Task }) => {
+    const { startEdit } = useTasksModal()
+    const { name: keyword } = useTaskSearchParams()
+    return (
+        <Card key={task.id} style={{ marginBottom: '0.5rem', cursor: 'pointer' }}
+            onClick={() => startEdit(task.id)}>
             <p>
-                <Mark keyword={keyword} name={task.name}/>
+                <Mark keyword={keyword} name={task.name} />
             </p>
-            <TaskTypeIcon id={task.typeId}/>
+            <TaskTypeIcon id={task.typeId} />
         </Card>)
 }
 
 
 // 将看板的数据搞成一列一列的
-export const KanbanColumn = ({kanban}:{kanban:Kanban}) => {
-    const {data:allTasks} = useTasks(useTaskSearchParams())
+export const KanbanColumn = React.forwardRef<HTMLDivElement, { kanban: Kanban }>(({ kanban,...props }, ref) => {
+    const { data: allTasks } = useTasks(useTaskSearchParams())
     const tasks = allTasks?.filter(task => task.kanbanId === kanban.id)
-    return <Container>
+    return <Container ref={ref} {...props}>
         <Row between={true}>
             <h3>{kanban.name}</h3>
-            <More kanban={kanban}/>
+            <More kanban={kanban} key={kanban.id} />
         </Row>
         <TasksContainer>
-            {tasks?.map((task) => <TaskCard task={task}/>
-        )}
-                <CreateTask kanbanId={kanban.id}/>
+          <Drop type={'ROW'} direction={'vertical'} droppableId={String(kanban.id)}>
+            <DropChild>
+            {tasks?.map((task,taskIndex) => (
+                <Drag key={task.id} index={taskIndex} draggableId={'task' + task.id}>
+                   <div>
+                   <TaskCard task={task} key={task.id} />
+                   </div>
+                </Drag>
+            )
+            )}
+            </DropChild>
+          </Drop>
+            <CreateTask kanbanId={kanban.id} />
         </TasksContainer>
     </Container>
-}
+})
+
+
 //删除
 const More = ({ kanban }: { kanban: Kanban }) => {
     const { mutateAsync } = useDeleteKanban(useKanbansQueryKey());
     const startDelete = () => {
-      Modal.confirm({
-        okText: "确定",
-        cancelText: "取消",
-        title: "确定删除看板吗",
-        onOk() {
-          return mutateAsync({ id: kanban.id });
-        },
-      });
+        Modal.confirm({
+            okText: "确定",
+            cancelText: "取消",
+            title: "确定删除看板吗",
+            onOk() {
+                return mutateAsync({ id: kanban.id });
+            },
+        });
     };
     const overlay = (
-      <Menu>
-        <Menu.Item>
-          <Button type={"link"} onClick={startDelete}>
-            删除
-          </Button>
-        </Menu.Item>
-      </Menu>
+        <Menu>
+            <Menu.Item>
+                <Button type={"link"} onClick={startDelete}>
+                    删除
+                </Button>
+            </Menu.Item>
+        </Menu>
     );
     return (
-      <Dropdown overlay={overlay}>
-        <Button type={"link"}>...</Button>
-      </Dropdown>
+        <Dropdown overlay={overlay}>
+            <Button type={"link"}>...</Button>
+        </Dropdown>
     );
-  };
+};
 
 export const Container = styled.div`
     min-width: 27rem;
