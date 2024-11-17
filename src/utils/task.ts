@@ -3,9 +3,10 @@ import { useHttp } from "./http"
 import { Kanban } from "types/kanban"
 import { Task } from "types/task"
 import { useProjectsSearchParams } from "screens/project-list/util";
-import { useAddConfig, useDeleteConfig, useEditConfig, useReorderConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig } from "./use-optimistic-options";
 import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
 import { SortProps } from "./kanban";
+import { useReorderTaskConfig } from "./use-optimistic-options";
 
 
 //获取看板列表的hook
@@ -80,7 +81,7 @@ export const useReorderTask = (queryKey:QueryKey) => {
                 method:'POST'
             })
         },
-        useReorderConfig(queryKey)
+        useReorderTaskConfig(queryKey)
     )
 }
 

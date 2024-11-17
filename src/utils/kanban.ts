@@ -3,7 +3,8 @@ import { useHttp } from "./http"
 import { Kanban } from "types/kanban"
 import { QueryKey, useMutation, useQuery, useQueryClient } from "react-query";
 import { useProjectsSearchParams } from "screens/project-list/util";
-import { useAddConfig, useDeleteConfig, useEditConfig, useReorderConfig } from "./use-optimistic-options";
+import { useAddConfig, useDeleteConfig, useEditConfig} from "./use-optimistic-options";
+import { useReorderKanbanConfig } from "./use-optimistic-options";
 
 //获取看板列表的hook
 export const useKanbans = (param? : Partial<Kanban>) =>{
@@ -60,6 +61,6 @@ export const useReorderKanban = (queryKey:QueryKey) => {
                 method:'POST'
             })
         },
-        useReorderConfig(queryKey)
+        useReorderKanbanConfig(queryKey)
     )
 }
