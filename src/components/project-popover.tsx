@@ -11,7 +11,7 @@ export const ProjectPopover = () =>{
     const {open} = useProjectModal()
 
     // 获取项目
-    const {data:projects,isLoading} = useProjects()
+    const {data:projects,refetch} = useProjects()
     // 展示收藏项目
     const pinnedProjects = projects?.filter(projects => projects.pin)
 
@@ -35,7 +35,7 @@ export const ProjectPopover = () =>{
     </ContentContainer>
 
     // 该属性表示下拉列表从下面拉出来
-    return <Popover placement={"bottom"} content={content}>
+    return <Popover onVisibleChange={() => refetch()} placement={"bottom"} content={content}>
         <span>
             项目
         </span>

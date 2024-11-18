@@ -13,6 +13,7 @@ import { ProjectScreen } from "screens/project"
 import { resetRoute } from "utils"
 import { ProjectModal } from "screens/project-list/project-modal"
 import { ProjectPopover } from "components/project-popover"
+import { UserPopover } from "components/user-popever"
 
 /**
  * grid和flex布局各种的应用场景
@@ -73,7 +74,7 @@ const PageHeader = () => {
             <SoftwareLogo width={'18rem'} color={'rgb(38,132,255)'}/>
         </ButtonNoPadding>
         <ProjectPopover/>
-        <span>用户</span>
+        <UserPopover/>
     </HeaderLeft>
     <HeaderRight>
        {/* overlay 把鼠标放上去以后显示的下拉框 */}
