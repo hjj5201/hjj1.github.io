@@ -6,19 +6,13 @@ import { useAsync } from "./use-async"
 import { useQuery } from "react-query"
 
 
-export const useUers = (id?:number) => {
-    const client = useHttp()
-    return useQuery<User[]>(
-        ['users',{id}],
-        () => client(`users/${id}`),
-        // 配置参数
-        {
-            // 当id有值时采取触发获取详情
-            enabled:Boolean(id)
-        }
-    )
-}
-
+export const useUers = (param?: Partial<User>) => {
+    const client = useHttp();
+  
+    return useQuery<User[]>(["users", param], () =>
+      client("users", { data: param })
+    );
+  };
 
 
 // export const useUers = (param?:Partial<User>) => {
